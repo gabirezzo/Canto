@@ -1,5 +1,10 @@
 type Query {
     findAllBooks: [Book!]!
+    finBookById: Book
+    createBook: Book!
+    updateBook: Book!
+    deleteBook: []
+    
 }
 
 #type Mutation {

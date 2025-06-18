@@ -1,10 +1,13 @@
 package com.acme.bookmanagement.service;
 
 import com.acme.bookmanagement.model.Book;
+import com.acme.bookmanagement.model.Author;
 import com.acme.bookmanagement.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 public class BookService {
@@ -16,6 +19,33 @@ public class BookService {
 
     public List<Book> findAll() {
         return bookRepository.findAll();
+    }
+
+    public Book create(String name, Author author, LocalDate publishedDate) {
+
+        Book book = new Book(0L, name, author, publishedDate);
+        return bookRepository.save(book);
+    }
+
+    public Book findById(Long id) {
+        return bookRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Book not found with id: " + id));
+    }
+    public Book update(Long id, Book bookDetails) {
+        Book book = findById(id);
+        book.setTitle(bookDetails.getTitle());
+        book.setAuthor(bookDetails.getAuthor());
+        book.setPublishedDate(bookDetails.getPublishedDate());
+        return bookRepository.save(book);
+    }
+
+    public void delete(Long id) {
+        Book book = findById(id);
+        bookRepository.delete(book);
+    }
+
+    public List<Book> findByPublishedDate(LocalDate publishedDate) {
+        return bookRepository.findByPublishedDate(publishedDate);
     }
 }
 
