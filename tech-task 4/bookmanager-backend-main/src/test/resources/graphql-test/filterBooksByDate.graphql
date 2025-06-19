@@ -1,0 +1,7 @@
+query findByPublishedDate($date: Local){
+  findByPublishedDate($date: LocalDate) {
+    id
+    title
+    author
+  }
+}

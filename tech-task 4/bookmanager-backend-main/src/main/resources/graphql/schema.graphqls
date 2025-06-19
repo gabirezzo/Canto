@@ -1,14 +1,14 @@
 type Query {
     findAllBooks: [Book!]!
     finBookById: Book
-    createBook: Book!
-    updateBook: Book!
-    deleteBook: []
+    findByPublishedDate(publishedDate: LocalDate!): [Book]
     
 }
 
 #type Mutation {
-#
+    createBook: Book!
+    updateBook: Book!
+    deleteBook: String 
 #}
 
 type Book {

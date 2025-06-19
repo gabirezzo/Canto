@@ -13,12 +13,11 @@ public class Author {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-    private LocalDate birthDate;
 
     public Author() {
     }
 
-    public Author(Long id, String name, LocalDate birthDate) {
+    public Author(Long id, String name) {
         this.id = id;
         this.name = name;
     }
