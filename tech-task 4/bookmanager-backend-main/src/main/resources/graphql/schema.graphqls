@@ -1,19 +1,37 @@
 type Query {
     findAllBooks: [Book!]!
-    finBookById: Book
-    findByPublishedDate(publishedDate: LocalDate!): [Book]
-    
+}
+
+type Query {
+    finBookById: Book  
+}
+
+type Query {
+    findByPublishedDate(publishedDate: LocalDate!): [Book]   
 }
 
 #type Mutation {
     createBook: Book!
+#}
+
+#type Mutation {
     updateBook: Book!
+#}
+
+#type Mutation {
     deleteBook: String 
 #}
 
 type Book {
-    id: Int
+    id: Long
     title: String
-    author: String
+    authors: [Author]
     publishedDate: String
 }
+
+type Author{
+    id: Long
+    name: String
+    books: [Book]
+}
+

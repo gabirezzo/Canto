@@ -3,6 +3,7 @@ package com.acme.bookmanagement.controller;
 import com.acme.bookmanagement.model.Book;
 import com.acme.bookmanagement.model.Author;
 import com.acme.bookmanagement.service.BookService;
+import com.acme.bookmanagement.controller.AuthorController;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,9 +17,11 @@ import java.time.LocalDate;
 public class BookController {
 
     private final BookService bookService;
+    private final AuthorController authorController;
 
-    public BookController(BookService bookService) {
-        this.bookService = bookService;
+    public BookController(BookService bookService, AuthorController authorController) {
+        this.bookService = bookService; 
+        this.authorController = authorController;
     }
 
     @QueryMapping
@@ -32,8 +35,9 @@ public class BookController {
     }
 
     @QueryMapping
-    public Book createBook(String title, Author author, LocalDate publishedDate) {
-        return bookService.create(title, author, publishedDate);
+    public Book createBook(String title, List<String> authors, LocalDate publishedDate) {
+        List<Author> modelAuthors = authorController.createAuthors(authors);
+        return bookService.create(title, modelAuthors, publishedDate);
     }
 
     @QueryMapping

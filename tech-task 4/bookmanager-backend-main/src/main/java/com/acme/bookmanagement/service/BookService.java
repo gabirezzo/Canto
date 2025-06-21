@@ -21,9 +21,8 @@ public class BookService {
         return bookRepository.findAll();
     }
 
-    public Book create(String name, Author author, LocalDate publishedDate) {
-
-        Book book = new Book(0L, name, author, publishedDate);
+    public Book create(String name, List<Author> authors, LocalDate publishedDate) {
+        Book book = new Book(0L, name, authors, publishedDate);
         return bookRepository.save(book);
     }
 
@@ -34,7 +33,7 @@ public class BookService {
     public Book update(Long id, Book bookDetails) {
         Book book = findById(id);
         book.setTitle(bookDetails.getTitle());
-        book.setAuthor(bookDetails.getAuthor());
+        book.setAuthors(bookDetails.getAuthors());
         book.setPublishedDate(bookDetails.getPublishedDate());
         return bookRepository.save(book);
     }

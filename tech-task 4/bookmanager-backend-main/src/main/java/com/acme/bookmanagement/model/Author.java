@@ -1,10 +1,10 @@
 package com.acme.bookmanagement.model;
+import com.acme.bookmanagement.model.Book;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
 import java.time.LocalDate;
 
 @Entity
@@ -13,9 +13,6 @@ public class Author {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-
-    public Author() {
-    }
 
     public Author(Long id, String name) {
         this.id = id;
