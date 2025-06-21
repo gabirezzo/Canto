@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {addBook} from '../features/bookReducer';
 import {createBook} from '../api/api';
+import Form from "react-bootstrap/Form";
 
 const AddBook = () => {
     const dispatch = useDispatch();
@@ -19,7 +20,7 @@ const AddBook = () => {
 
     return (
         <div>
-            <h2>Add Book</h2>
+            <h2>Add new Book</h2>
             <input
                 type="text"
                 placeholder="Title"
@@ -32,12 +33,8 @@ const AddBook = () => {
                 value={author}
                 onChange={(e) => setAuthor(e.target.value)}
             />
-            <input
-                type="text"
-                placeholder="Published Date"
-                value={publishedDate}
-                onChange={(e) => setPublishedDate(e.target.value)}
-            />
+
+            <Form.Control type="date" value={publishedDate} onChange={(e) => setPublishedDate(e.target.value)} />
             <button onClick={handleAddBook}>Add</button>
         </div>
     );

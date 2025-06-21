@@ -1,4 +1,4 @@
-import React from 'react';
+import {act} from 'react';
 import { configureStore } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
 import { render } from '@testing-library/react';

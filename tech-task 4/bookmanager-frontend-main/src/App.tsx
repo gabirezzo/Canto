@@ -3,6 +3,9 @@ import {useDispatch} from 'react-redux';
 import {setBooks} from './features/bookReducer';
 import BooksList from './components/BooksList';
 import AddBook from './components/AddBook';
+import DeleteBook from './components/DeleteBook';
+import Sidebar from './components/Sidebar';
+import Footer from './components/Footer';
 import {fetchBooks} from './api/api';
 
 const App: React.FC = () => {
@@ -20,8 +23,12 @@ const App: React.FC = () => {
     return (
         <div>
             <h1>Book Management</h1>
+            <p>Welcome to the Book Management System</p>
+        
             <AddBook/>
             <BooksList/>
+            <DeleteBook/>
+            <Footer/>
         </div>
     );
 };

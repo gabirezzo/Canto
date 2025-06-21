@@ -1,5 +1,5 @@
 import {createBook} from "../../api/api";
-import React from "react";
+import {act} from "react";
 import {Provider} from "react-redux";
 import AddBook from "../../components/AddBook";
 import {fireEvent, render, waitFor} from "@testing-library/react";
