@@ -24,22 +24,22 @@ public class BookControllerTest {
 
     @MockBean
     private BookService bookService;
-    private AuthorRepository authorRepository;
 
-    Author author = new Author(1L, "author-1");
-    Author authorSave = authorRepository.save(author);
-    Author author2 = new Author(1L, "author-2");
-    Author authorSave2 = authorRepository.save(author2);
+    @MockBean
+    private AuthorController authorController;
+
+    Author authorSave = new Author(1L, "author-1");
+    Author authorSave2 = new Author(2L, "author-2");
 
 
     private final Map<Long, Book> books = Map.of(
             1L, new Book(1L,
                     "title-1",
-                    Collections.singletonList(authorSave),
+                new ArrayList<>(Collections.singletonList(authorSave)),
                     LocalDate.of(2021, 2, 3)),
             2L, new Book(2L,
                     "title-2",
-                    Collections.singletonList(authorSave2),
+                    new ArrayList<>(Collections.singletonList(authorSave2)),
                     LocalDate.of(2021, 2, 3))
     );
 
@@ -58,15 +58,15 @@ public class BookControllerTest {
                 .matchesJson("""
                     [
                         {
-                            "id": 1,
+                            "id": "1",
                             "title": "title-1",
-                            "authors": {"name: "author-1" },
+                            "authors": [{"name": "author-1"}],
                             "publishedDate": "2021-02-03"
                         },
                         {
-                            "id": 2,
+                            "id": "2",
                             "title": "title-2",
-                            "authors": {"name: "author-2" },
+                            "authors": [{"name": "author-2" }],
                             "publishedDate": "2021-02-03"
                         }
                     ]

@@ -2,6 +2,7 @@ package com.acme.bookmanagement.repository;
 
 import com.acme.bookmanagement.model.Book;
 import com.acme.bookmanagement.model.Author;
+import com.acme.bookmanagement.repository.AuthorRepository;
 
 
 import org.junit.jupiter.api.AfterEach;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Collections;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -27,18 +29,20 @@ public class BookRepositoryTest {
     @Autowired
     private BookRepository repo;
 
+    @Autowired
     private AuthorRepository authorRepository;
 
 
     private Book book;
+    private Author author;
 
     @BeforeEach
     public void setUp() {
-        Author author = new Author(1L, "author-1");
+        author = new Author(1L, "author-1");
         author = authorRepository.save(author);
         book = new Book(null,
                 "title-1",
-                Collections.singletonList(author),
+                new ArrayList<>(Collections.singletonList(author)),
                 LocalDate.of(2021, 2, 3));
         book = repo.save(book);
     }

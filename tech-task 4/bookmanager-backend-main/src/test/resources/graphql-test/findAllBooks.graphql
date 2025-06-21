@@ -2,7 +2,9 @@ query findAllBooks {
     findAllBooks {
         id
         title
-        author
+        authors { 
+            name
+        }
         publishedDate
     }
 }
