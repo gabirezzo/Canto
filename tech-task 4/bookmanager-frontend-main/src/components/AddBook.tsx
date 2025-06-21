@@ -7,14 +7,14 @@ import Form from "react-bootstrap/Form";
 const AddBook = () => {
     const dispatch = useDispatch();
     const [title, setTitle] = useState('');
-    const [author, setAuthor] = useState('');
+    const [authors, setAuthors] = useState('');
     const [publishedDate, setPublishedDate] = useState('');
 
     const handleAddBook = async () => {
-        const newBook = await createBook({title, author, publishedDate});
+        const newBook = await createBook({title, authors: [authors] as [string], publishedDate});
         dispatch(addBook(newBook));
         setTitle('');
-        setAuthor('');
+        setAuthors('');
         setPublishedDate('');
     };
 
@@ -30,8 +30,8 @@ const AddBook = () => {
             <input
                 type="text"
                 placeholder="Author"
-                value={author}
-                onChange={(e) => setAuthor(e.target.value)}
+                value={authors}
+                onChange={(e) => setAuthors(e.target.value)}
             />
 
             <Form.Control type="date" value={publishedDate} onChange={(e) => setPublishedDate(e.target.value)} />

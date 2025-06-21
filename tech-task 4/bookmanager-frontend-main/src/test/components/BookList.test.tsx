@@ -14,8 +14,8 @@ describe('BooksList', () => {
         initialState = {
             books: {
                 books: [
-                    { id: 1, title: 'Book One', author: 'Author One', publishedDate: '2021-01-01' },
-                    { id: 2, title: 'Book Two', author: 'Author Two', publishedDate: '2022-02-02' },
+                    { id: 1, title: 'Book One', authors: ['Author One'], publishedDate: '2021-01-01' },
+                    { id: 2, title: 'Book Two', authors: ['Author Two'], publishedDate: '2022-02-02' },
                 ],
             },
         };
