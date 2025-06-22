@@ -1,4 +1,4 @@
-query findBookById($id: Int!) {
+query findBookById($id: Long!) {
     findBookById(id: $id) {
         id
         title

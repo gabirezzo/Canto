@@ -119,5 +119,25 @@ public class BookRepositoryTest {
         assertEquals(author.getName(), savedBook.getAuthors().get(0).getName());
         assertEquals(LocalDate.of(2023, 5, 1), savedBook.getPublishedDate());
     }
+    
+    @Test
+    void findByPublishedDate_returnsEmptyListWhenNoBooksMatch() {
+        LocalDate nonExistentDate = LocalDate.of(1999, 1, 1);
+        List<Book> books = repo.findByPublishedDate(nonExistentDate);
+        assertThat(books).isEmpty();
+    }
 
+    @Test
+    void findByPublishedDate_returnsAllBooksWithSameDate() {
+        LocalDate sharedDate = LocalDate.of(2020, 12, 12);
+        Book book2 = new Book(null, "Second Book", new ArrayList<>(Collections.singletonList(author)), sharedDate);
+        Book book3 = new Book(null, "Third Book", new ArrayList<>(Collections.singletonList(author)), sharedDate);
+        repo.save(book2);
+        repo.save(book3);
+
+        List<Book> books = repo.findByPublishedDate(sharedDate);
+
+        assertThat(books).hasSize(2);
+        assertThat(books).extracting(Book::getTitle).containsExactlyInAnyOrder("Second Book", "Third Book");
+    }
 }

@@ -1,4 +1,4 @@
-mutation($id : Int!, $bookDetails: Book!) {
+mutation($id : Long!, $bookDetails: Book!) {
   updateBook(id: $id, bookDetails: $bookDetails) {
     id
     title

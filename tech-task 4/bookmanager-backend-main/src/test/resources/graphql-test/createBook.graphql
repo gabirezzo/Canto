@@ -1,8 +1,10 @@
 mutation createBook($title: String!, $authors: [String!]!, $publishedDate: String!) {
-    createBook(title: $title, authors: $[Authors!]!, publishedDate: $publishedDate) {
+    createBook(title: $title, authors: $authors, publishedDate: $publishedDate) {
         id
         title
-        author
+        authors {
+            name
+        }
         publishedDate
     }
 }

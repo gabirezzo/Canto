@@ -92,15 +92,18 @@ public class BookControllerTest {
                     }
                 """);
     }
+
     @Test
     void shouldCreateBook() {
         when(this.authorController.createAuthors(any()))
                 .thenReturn(new ArrayList<>(Arrays.asList(authorSave, authorSave2)));
 
+        // Return a Book with BOTH authors
+        Book createdBook = new Book(1L, "title-1", new ArrayList<>(Arrays.asList(authorSave, authorSave2)), LocalDate.of(2021, 2, 3));
         when(this.bookService.create("title-1", 
                 new ArrayList<>(Arrays.asList(authorSave, authorSave2)), 
                 LocalDate.of(2021, 2, 3)))
-                .thenReturn(books.get(1L));
+                .thenReturn(createdBook);
 
         this.graphQlTester
                 .documentName("createBook")
@@ -154,9 +157,8 @@ public class BookControllerTest {
                 .variable("id", 1L)
                 .execute()
                 .path("deleteBook")
-                .matchesJson("""
-                    true
-                """);
+                .entity(boolean.class)
+                .isEqualTo(true);
     }
 
     @Test

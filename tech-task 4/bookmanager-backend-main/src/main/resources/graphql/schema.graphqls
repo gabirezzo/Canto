@@ -1,6 +1,6 @@
 type Query {
     findAllBooks: [Book!]!
-    finBookById: Book  
+    findBookById: Book  
     findByPublishedDate(publishedDate: String!): [Book]   
 }
 
@@ -19,7 +19,7 @@ type Author{
 type Mutation {
     createBook: Book!
     updateBook: Book!
-    deleteBook: String 
+    deleteBook: Boolean 
 }
 
 
