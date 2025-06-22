@@ -1,8 +1,10 @@
-query findBookById($id: Int) {
+query findBookById($id: Int!) {
     findBookById(id: $id) {
         id
         title
-        author
+        authors {
+            name
+        }
         publishedDate
     }
 }

@@ -38,10 +38,14 @@ public class BookService {
         return bookRepository.save(book);
     }
 
-    public void delete(Long id) {
-        Book book = findById(id);
-        bookRepository.delete(book);
+    public boolean delete(Long id) {
+         Book book = findById(id);
+        if (book != null) {
+            bookRepository.delete(book);
+            return true;
     }
+    return false;
+}
 
     public List<Book> findByPublishedDate(LocalDate publishedDate) {
         return bookRepository.findByPublishedDate(publishedDate);

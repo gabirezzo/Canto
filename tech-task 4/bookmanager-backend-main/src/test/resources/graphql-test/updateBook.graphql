@@ -1,0 +1,8 @@
+mutation($id : Int!, $bookDetails: Book!) {
+  updateBook(id: $id, bookDetails: $bookDetails) {
+    id
+    title
+    authors { name }
+    publishedDate
+  }
+}

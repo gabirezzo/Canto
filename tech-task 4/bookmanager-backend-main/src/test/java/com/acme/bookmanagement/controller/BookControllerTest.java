@@ -72,4 +72,115 @@ public class BookControllerTest {
                     ]
                 """);
     }
+
+    @Test
+    void shouldGetBookById() {
+        when(this.bookService.findById(1L))
+                .thenReturn(books.get(1L));
+
+        this.graphQlTester
+                .documentName("findBookById")
+                .variable("id", 1L)
+                .execute()
+                .path("findBookById")
+                .matchesJson("""
+                    {
+                        "id": "1",
+                        "title": "title-1",
+                        "authors": [{"name": "author-1"}],
+                        "publishedDate": "2021-02-03"
+                    }
+                """);
+    }
+    @Test
+    void shouldCreateBook() {
+        when(this.authorController.createAuthors(any()))
+                .thenReturn(new ArrayList<>(Arrays.asList(authorSave, authorSave2)));
+
+        when(this.bookService.create("title-1", 
+                new ArrayList<>(Arrays.asList(authorSave, authorSave2)), 
+                LocalDate.of(2021, 2, 3)))
+                .thenReturn(books.get(1L));
+
+        this.graphQlTester
+                .documentName("createBook")
+                .variable("title", "title-1")
+                .variable("authors", Arrays.asList("author-1", "author-2"))
+                .variable("publishedDate", "2021-02-03")
+                .execute()
+                .path("createBook")
+                .matchesJson("""
+                    {
+                        "id": "1",
+                        "title": "title-1",
+                        "authors": [{"name": "author-1"}, {"name": "author-2"}],
+                        "publishedDate": "2021-02-03"
+                    }
+                """);
+    }
+
+    @Test
+    void shouldUpdateBook() {
+        Book updatedBook = new Book(1L, "updated-title", 
+                new ArrayList<>(Collections.singletonList(authorSave)), 
+                LocalDate.of(2021, 2, 3));
+
+        when(this.bookService.update(1L, updatedBook))
+                .thenReturn(updatedBook);
+
+        this.graphQlTester
+                .documentName("updateBook")
+                .variable("id", 1L)
+                .variable("bookDetails", updatedBook)
+                .execute()
+                .path("updateBook")
+                .matchesJson("""
+                    {
+                        "id": "1",
+                        "title": "updated-title",
+                        "authors": [{"name": "author-1"}],
+                        "publishedDate": "2021-02-03"
+                    }
+                """);
+    }
+
+    @Test
+    void shouldDeleteBook() {
+        when(this.bookService.delete(1L))
+                .thenReturn(true);
+
+        this.graphQlTester
+                .documentName("deleteBook")
+                .variable("id", 1L)
+                .execute()
+                .path("deleteBook")
+                .matchesJson("""
+                    true
+                """);
+    }
+
+    @Test
+    void shouldFilterBooksByDate() {
+        LocalDate date = LocalDate.of(2021, 2, 3);
+        List<Book> filteredBooks = new ArrayList<>(Collections.singletonList(books.get(1L)));
+
+        when(this.bookService.findByPublishedDate(date))
+                .thenReturn(filteredBooks);
+
+        this.graphQlTester
+                .documentName("filterBooksByDate")
+                .variable("publishedDate", date)
+                .execute()
+                .path("filterBooksByDate")
+                .matchesJson("""
+                    [
+                        {
+                            "id": "1",
+                            "title": "title-1",
+                            "authors": [{"name": "author-1"}],
+                            "publishedDate": "2021-02-03"
+                        }
+                    ]
+                """);
+    }
 }

@@ -1,7 +1,9 @@
-query findByPublishedDate($date: Local){
-  findByPublishedDate($date: LocalDate) {
+query findByPublishedDate($date: String!){
+  findByPublishedDate($date: String!) {
     id
     title
-    author
+    authors {
+      name
+    }
   }
 }

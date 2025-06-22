@@ -101,4 +101,23 @@ public class BookRepositoryTest {
         assertEquals(LocalDate.of(2022, 1, 1), updatedBook.getPublishedDate());
     }
 
+    @Test
+    void testFindById() {
+        Book foundBook = repo.findById(book.getId()).orElse(null);
+        assertNotNull(foundBook);
+        assertEquals(book.getTitle(), foundBook.getTitle());
+        assertEquals(book.getAuthors(), foundBook.getAuthors());
+        assertEquals(book.getPublishedDate(), foundBook.getPublishedDate());
+    }
+
+    @Test
+    void testCreateBook() {
+        Book newBook = new Book(null, "New Book", new ArrayList<>(Collections.singletonList(author)), LocalDate.of(2023, 5, 1));
+        Book savedBook = repo.save(newBook);
+        assertNotNull(savedBook.getId());
+        assertEquals("New Book", savedBook.getTitle());
+        assertEquals(author.getName(), savedBook.getAuthors().get(0).getName());
+        assertEquals(LocalDate.of(2023, 5, 1), savedBook.getPublishedDate());
+    }
+
 }
