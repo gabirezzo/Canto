@@ -1,9 +1,12 @@
-import React from 'react';
-import {useSelector} from 'react-redux';
-import {RootState} from '../store';
+import React, { useEffect, useState } from 'react';
+import { fetchBooks } from '../api/api';
 
 const BooksList = () => {
-    const books = useSelector((state: RootState) => state.books.books);
+    const [books, setBooks] = useState<any[]>([]);
+
+    useEffect(() => {
+        fetchBooks().then(setBooks);
+    }, []);
 
     return (
         <div>
@@ -11,7 +14,7 @@ const BooksList = () => {
             <ul>
                 {books.map(book => (
                     <li key={book.id}>
-                        {book.title} by {book.authors} (Published: {book.publishedDate})
+                        {book.title} by {book.authors.map((a: any) => a.name).join(', ')} (Published: {book.publishedDate})
                     </li>
                 ))}
             </ul>

@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import {useDispatch} from 'react-redux';
-import {addBook} from '../features/bookReducer';
-import {createBook} from '../api/api';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addBook } from '../features/bookReducer';
+import { createBook } from '../api/api';
 import Form from "react-bootstrap/Form";
 
 const AddBook = () => {
@@ -11,12 +11,19 @@ const AddBook = () => {
     const [publishedDate, setPublishedDate] = useState('');
 
     const handleAddBook = async () => {
-        const newBook = await createBook({title, authors: [authors] as [string], publishedDate});
-        dispatch(addBook(newBook));
-        setTitle('');
-        setAuthors('');
-        setPublishedDate('');
-    };
+    const authorsArray = authors
+        .split(',')
+        .map(a => a.trim())
+        .filter(a => a.length > 0);
+
+    if (!title || authorsArray.length === 0 || !publishedDate) return;
+    const newBook = await createBook({ title, authors: authorsArray, publishedDate });
+    console.log('createBook:', createBook);
+    dispatch(addBook(newBook));
+    setTitle('');
+    setAuthors('');
+    setPublishedDate('');
+};
 
     return (
         <div>
@@ -29,12 +36,15 @@ const AddBook = () => {
             />
             <input
                 type="text"
-                placeholder="Author"
+                placeholder="Authors (comma separated)"
                 value={authors}
                 onChange={(e) => setAuthors(e.target.value)}
             />
-
-            <Form.Control type="date" value={publishedDate} onChange={(e) => setPublishedDate(e.target.value)} />
+            <Form.Control
+                type="date"
+                value={publishedDate}
+                onChange={(e) => setPublishedDate(e.target.value)}
+            />
             <button onClick={handleAddBook}>Add</button>
         </div>
     );

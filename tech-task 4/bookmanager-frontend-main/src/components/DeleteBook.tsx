@@ -5,12 +5,15 @@ import {deleteBook} from '../api/api';
 
 const DeleteBook = () => {
     const dispatch = useDispatch();
-    const [bookId, getBookId] = useState('');
+    const [bookId, setBookId] = useState('');
 
     const handleDeleteBook = async () => {
-        await deleteBook(1);
-        dispatch(deleteFeature(1));
-        getBookId('');
+        if (!bookId) return;
+        const id = Number(bookId);
+        if (isNaN(id)) return;
+        await deleteBook(id);
+        dispatch(deleteFeature(id));
+        setBookId('');
     };
 
     return (
@@ -20,7 +23,7 @@ const DeleteBook = () => {
                 type="text"
                 placeholder="Book ID"
                 value={bookId}
-                onChange={(e) => getBookId(e.target.value)}
+                onChange={(e) => setBookId(e.target.value)}
             />
             <button onClick={handleDeleteBook}>Delete</button>
         </div>

@@ -1,4 +1,4 @@
-import {Book} from '../features/bookReducer';
+import {Book} from '../types/Book';
 
 const GRAPHQL_URL = 'http://localhost:8080/graphql';
 
@@ -8,20 +8,22 @@ export const fetchBooks = async (): Promise<Book[]> => {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
             query: `{
-        findAllBooks {
-          id
-          title
-          authors {
-             name
-          }
-          publishedDate
-        }
-      }`,
+                findAllBooks {
+                    id
+                    title
+                    authors {
+                        name
+                    }
+                    publishedDate
+                }
+            }`,
         }),
     });
 
-    const {data} = await response.json();
-    return data.findAllBooks;
+    const json = await response.json();
+    console.log('GraphQL response:', json); // <-- Add this line
+    if (!json.data) throw new Error('No data returned from GraphQL');
+    return json.data.findAllBooks;
 };
 
 export const fetchBookById = async (id: number): Promise<Book> => {
@@ -30,12 +32,10 @@ export const fetchBookById = async (id: number): Promise<Book> => {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
             query: `{
-        findBookById($id: Int!){
+        findBookById($id: Long!){
           id
           title
-          authors {
-            name
-        }
+          authors 
           publishedDate
         }
       }`,
@@ -52,11 +52,13 @@ export const createBook = async (book: Omit<Book, 'id'>): Promise<Book> => {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
-            query: `mutation($title: String!, $authors: [String]!, $publishedDate: String!) {
-        createBook(title: $title, authors: $[Author], publishedDate: $publishedDate) {
+            query: `mutation($title: String!, $authors: [String!]!, $publishedDate: String!) {
+        createBook(title: $title, authors: $authors, publishedDate: $publishedDate) {
           id
           title
-          authors
+          authors {
+           name
+          }
           publishedDate
         }
       }`,
@@ -73,7 +75,7 @@ export const deleteBook = async (id: number): Promise<number> => {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
-            query: `mutation($id: Int!) {
+            query: `mutation($id: Long!) {
         deleteBook(id: $id) {
           id
         }
